@@ -26,19 +26,18 @@ div#left_frame{
   top:10%;
   left:0px;
   bottom:0px;
-  width:40%;
+  width:60%;
 }
 
 div#structure_frame{
   position:absolute;
-  height:50%;
+  height:100%;
   width:100%;
 }
 
 div#pssm_frame{
   position:absolute;
-  top:50%;
-  height:50%;
+  height:100%;
   width:100%;
 }
 
@@ -47,13 +46,7 @@ div#right_frame{
   top:0px;
   right:0px;
   bottom:0px;
-  width:60%;
-}
-
-div#msa_frame{
-  position:absolute; 
-  width:100%;
-  height:100%;
+  width:40%;
 }
 
 div#pssm_viewport{
