@@ -1,0 +1,9 @@
+%html(lang="en")
+  %head
+    = stylesheet_link_tag('structure_frame/structure_frame_style.css')
+    = javascript_include_tag('/ngl/ngl.js')
+    = javascript_include_tag('structure_viewer/nglClass.js')
+    = javascript_include_tag('structure_frame/structure_frame_lib.js')
+    = javascript_include_tag('structure_frame/structure_frame_init.js')
+  %body
+    =yield

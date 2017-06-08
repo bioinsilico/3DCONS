@@ -1,0 +1,23 @@
+%div#main_frame
+  :javascript
+    globals.pdb = "#{@pdb}";
+    globals.chains = #{@chains.to_json.html_safe};
+    globals.pdb_descritpion = #{@pdb_description.to_json.html_safe};
+  %div#header_frame
+    HEADER
+  %div#left_frame
+    %div#structure_frame
+      %div{:id => "structure_viewport", :style=>"width:100%; height:100%;"}
+        :javascript
+          structure_viewer = new nglClass({pdb_list:[globals.pdb], id:"structure_viewport"});
+    %div#pssm_frame
+      %div{:id => "pssm_viewport", :style=>"width:100%; height:100%;"}
+        :javascript
+          pssm_viewer = new pssmClass({  pdb_description:globals.pdb_descritpion,
+                                         id:"pssm_viewport",
+                                         jQuery:$j,
+                                         underscore:_
+          });
+  %div#right_frame
+    %div#msa_frame
+      %div{:id => "msa_viewport", :style=>"width:100%; height:100%;"}
