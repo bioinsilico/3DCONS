@@ -26,7 +26,7 @@ div#left_frame{
   top:10%;
   left:0px;
   bottom:0px;
-  width:60%;
+  width:45%;
 }
 
 div#structure_frame{
@@ -46,7 +46,7 @@ div#right_frame{
   top:0px;
   right:0px;
   bottom:0px;
-  width:40%;
+  width:55%;
 }
 
 div#pssm_viewport{

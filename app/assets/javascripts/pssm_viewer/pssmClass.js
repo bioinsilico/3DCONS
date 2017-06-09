@@ -30,7 +30,7 @@ function pssmClass( args ){
       var V = self._.flatten(["<td>"+aa['index']+"</td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['a']+"</td>", "<td>"+aa['b']+"</td>"])
       return "<tr>"+V.join("")+"</tr>";
     });
-    var table = "<table>"+tbody.join("")+"</table>";
+    var table = "<table class=\"pssm_table\">"+tbody.join("")+"</table>";
     self.$j('#'+self.eid).html( table );
   }
 
