@@ -2,7 +2,6 @@
  *= require_self
  *= require sweetalert
  *= require_tree .
- *= require msa/dist/msa
 */
 
 div#main_frame{
@@ -49,6 +48,27 @@ div#right_frame{
   width:55%;
 }
 
+div#pssm_frame{
+
+}
+
+div#pssm_div{
+  position:absolute;
+  top:10%;
+  height:85%;
+  width:98%;
+  border: 1px double #E9E9E9;
+  padding: 10 0 10 10;
+  border-radius: 10px;
+}
+
 div#pssm_viewport{
+  direction:rtl; 
   overflow:auto;
+  height:100%;
+  padding-left:25px;
+}
+
+div#pssm_viewport > div{
+  direction:ltr;
 }

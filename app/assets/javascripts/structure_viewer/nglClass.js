@@ -45,6 +45,7 @@ function initChain(i){
 function initStructure(i){
 	__init(i,false,true);
 	if( self.__load_ready ){
+                if(self.args.init_chain)self.highlight_chain(self.args.init_chain.pdb,self.args.init_chain.ch);
 		__trigger_alignment();
 		__clear_message();
 	}
@@ -146,10 +147,15 @@ function nglClass( args ) {
                   if( pickingProxy && pickingProxy.atom && pickingProxy.shiftKey ){
                       var atom = pickingProxy.atom;
                       var cp = pickingProxy.canvasPosition;
-                      /*var pdb = top.global_infoAlignment.pdb;
-                      var chain = top.global_infoAlignment.chain;
-                      var uniprot = top.global_infoAlignment.uniprot;
-                      var seq_index = top.$ALIGNMENTS[pdb][chain][uniprot]["inverse"][atom.resno]*/
+                      var chain = $j("#chain_selector").val();
+                      var current_iter = parseInt($j("#iter_selector").val());
+                      var seq_index = globals.mapping[ chain ]["inverse"][atom.resno]
+                      var a = globals.pdb_descritpion[ chain ]["scores"][current_iter][seq_index]["a"];
+                      var c1 = parseInt(a*255/4 );
+                      if(c1>255)c1=255;
+                      var c2 = 255-c1;
+                      var col = "rgb(255,"+c2+","+c2+")";
+                      self.color_by_chain_simple([atom.resno], globals.pdb, chain, col);
                       if(atom.chainname != chain){
                         swal({
                           title: "UNKNOWN RESIDUE",
@@ -163,8 +169,7 @@ function nglClass( args ) {
                         return;
                       }
                       if(seq_index){
-                        var selection = {begin:seq_index, end:seq_index, frame:"null"};
-                        trigger_aa_selection(selection);
+                        mark_row(seq_index+1);
                       }else{
                         swal({
                           title: "SELECTION ERROR",
@@ -218,6 +223,43 @@ function nglClass( args ) {
                   connsole.log("!!!!!!!");
                 }
 	}
+
+        self.color_by_conservation = function( pdb, chain, non_exec  ){
+                if(!self.Structures[pdb]) return;
+                if(self.selected.residues.length > 0){
+		  for (type in self.Structures[ self.selected.pdb ]['representations']['selection']){
+		    self.Structures[ self.selected.pdb ]['representations']['selection'][type].setVisibility(false);
+		  }
+                }
+                var model_flag = '';
+                if(self.model>=0) model_flag = 'and /'+self.model.toString()+' '; 
+		for(__pdb in self.Structures){
+			if(__pdb != self.selected.pdb && __pdb != 'density'){
+				self.Structures[ __pdb ]['representations']['trace'].setVisibility(true);
+				self.Structures[ __pdb ]['representations']['cartoon'].setVisibility(false);
+			}
+		}
+		self.Structures[ pdb ]['representations']['trace'].setSelection("protein "+model_flag+"and not :"+chain);
+		self.Structures[ pdb ]['representations']['cartoon'].setSelection("protein "+model_flag+"and :"+chain);
+		self.Structures[ pdb ]['representations']['cartoon'].setVisibility(true);
+
+                var conservation_colors = [];
+                var current_iter = parseInt($j("#iter_selector").val()); 
+                _.each(globals.pdb_descritpion[ chain ]["scores"][current_iter], function(i){ 
+                  var c1 = parseInt(i["a"]*255/4 );
+                  if(c1>255)c1=255
+                  var c2 = 255-c1;
+                  var col = "rgb(255,"+c2+","+c2+")";
+                  var res_id = globals.mapping[chain]['align'][ parseInt(i["index"])-1 ];
+                  if(res_id) conservation_colors.push( [col,res_id.toString()] );
+                });
+                var schemeId = NGL.ColormakerRegistry.addSelectionScheme( conservation_colors, "conservation" );
+                self.Structures[ pdb ]['representations']['cartoon'].setColor(schemeId);
+
+		self.selected.pdb = pdb;
+		self.selected.chain = chain;
+		self.selected.residues = [];
+	};
 
 	self.color_by_chain_simple = function( list, __pdb, chain, __color, non_exec ){
 		var pdb = __pdb.toLowerCase();
@@ -340,6 +382,7 @@ function nglClass( args ) {
 		self.selected.pdb = pdb;
 		self.selected.chain = chain;
 		self.selected.residues = [];
+                self.color_by_conservation(pdb, chain, non_exec);
 	};
 	
 	self.color_chain_by_region = function( REGION_list, non_exec ){

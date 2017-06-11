@@ -3,19 +3,28 @@
     globals.pdb = "#{@pdb}";
     globals.chains = #{@chains.to_json.html_safe};
     globals.pdb_descritpion = #{@pdb_description.to_json.html_safe};
+    globals.mapping  = #{@mapping.to_json.html_safe};
   %div#header_frame
-    HEADER
+    = select_tag(:chain_selector, options_for_select(@chain_selector))
   %div#left_frame
     %div#structure_frame
       %div{:id => "structure_viewport", :style=>"width:100%;height:100%;"}
         :javascript
-          structure_viewer = new nglClass({pdb_list:[globals.pdb], id:"structure_viewport"});
+          structure_viewer = new nglClass({  pdb_list:[globals.pdb], 
+                                             id:"structure_viewport",
+                                             init_chain:{pdb:globals.pdb, ch:globals.chains[0] }
+          });
   %div#right_frame
     %div#pssm_frame
-      %div{:id => "pssm_viewport", :style=>"width:100%; height:100%;"}
-        :javascript
-          pssm_viewer = new pssmClass({  pdb_description:globals.pdb_descritpion,
-                                         id:"pssm_viewport",
-                                         jQuery:$j,
-                                         underscore:_
-          });
+      %div{:id=>"pssm_control"}
+        = select_tag(:type_selector, options_for_select([["PSSM","pssm"],["PSFM","psfm"]]))
+        = select_tag(:iter_selector, options_for_select([["2","0"],["3","1"]]))
+      %div{:id=>"pssm_div"}
+        %div{:id => "pssm_viewport"}     
+          %div{:id => "_pssm_viewport"}
+            :javascript
+              pssm_viewer = new pssmClass({  pdb_description:globals.pdb_descritpion,
+                                             id:"_pssm_viewport",
+                                             jQuery:$j,
+                                             underscore:_
+              });

@@ -1,0 +1,150 @@
+
+table.pssm_table{
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size:12px;
+  border-collapse:collapse;
+}
+
+table.pssm_table:nth-child(2){
+    position:relative; 
+    top:50px;
+}
+
+table.pssm_table tr:hover{
+  cursor:pointer;
+}
+
+table.pssm_table:first-child tr:hover{
+  cursor:auto;
+}
+table.pssm_table:first-child tr:hover{
+  cursor:auto;
+}
+
+table.pssm_table:first-child{
+  position:fixed;
+  background:white;
+  z-index:1000000;
+}
+
+table.pssm_table:first-child tr td {
+  font-weight:bold;
+}
+
+table.pssm_table tr td{
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+table.pssm_table tr:hover td{
+  border-top: 1px double red;
+  border-bottom: 1px double red;
+}
+
+table.pssm_table tr.marked td{
+  border-top: 1px double red;
+  border-bottom: 1px double red;
+}
+
+table.pssm_table:first-child tr:hover td{
+  border-top: 1px double white;
+  border-bottom: 1px double white;
+}
+
+table.pssm_table tr:hover td:nth-child(25){
+  border-top: 1px double white;
+  border-bottom: 1px double white;
+}
+
+table.pssm_table tr.marked td:nth-child(25){
+  border-top: 1px double white;
+  border-bottom: 1px double white;
+}
+
+table.pssm_table tr td:first-child{
+  border-left: 1px double white;
+}
+
+table.pssm_table tr:hover td:first-child{
+  border-left: 1px double red;
+}
+
+table.pssm_table tr.marked td:first-child{
+  border-left: 1px double red;
+}
+
+table.pssm_table:first-child tr:hover td:first-child{
+  border-left: 1px double white;
+}
+
+table.pssm_table tr td:nth-child(24){
+  border-right: 1px double white;
+}
+
+table.pssm_table tr:hover td:nth-child(24){
+  border-right: 1px double red;
+}
+
+table.pssm_table tr.marked td:nth-child(24){
+  border-right: 1px double red;
+}
+
+table.pssm_table:first-child tr:hover td:nth-child(24){
+  border-right: 1px double white;
+}
+table.pssm_table:first-child tr:hover td:nth-child(24){
+  border-right: 1px double white;
+}
+
+table.pssm_table tr td{
+  width:25px;
+  text-align: right;
+}
+
+table.pssm_table tr td {
+  padding-top:7px;
+  padding-bottom:7px;
+}
+
+table.pssm_table tr td:first-child{
+  color:#666666;
+  font-weight:bold;
+  text-align:left;
+  width:50px;
+  padding-left:10px;
+}
+
+table.pssm_table tr td:first-child span{
+  visibility:hidden;
+}
+
+table.pssm_table tr td:nth-child(2){
+  font-weight:bold;
+  text-align:center;
+  width:50px;
+}
+
+table.pssm_table tr td:nth-child(3){
+  padding-left:15px;
+}
+
+table.pssm_table tr td:nth-child(23){
+  width:80px;
+}
+
+table.pssm_table tr td:nth-child(24){
+  width:50px;
+  padding-right:10px;
+}
+
+table.pssm_table tr td:nth-child(25){
+  width:155px;
+}
+
+table.pssm_table tr:first-child td:first-child span{
+  visibility:visible;
+}
+
+table.pssm_table tr:nth-child(10n) td:first-child span{
+  visibility:visible;
+}

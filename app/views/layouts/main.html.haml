@@ -1,13 +1,14 @@
 %html(lang="en")
   %head
-    = stylesheet_link_tag('main_frame/main_frame_style.css')
-    = javascript_include_tag('main_frame/main_frame_lib.js')
-    = javascript_include_tag('main_frame/main_frame_init.js')
+    = stylesheet_link_tag('main_frame/main_frame_style')
+    = stylesheet_link_tag('pssm_viewer/pssmClass')
+
+    = javascript_include_tag('main_frame/main_frame_lib')
+    = javascript_include_tag('main_frame/main_frame_init')
 
     = javascript_include_tag('/ngl/ngl.js')
 
-    = javascript_include_tag('structure_viewer/nglClass.js')
-    = javascript_include_tag('pssm_viewer/pssmClass.js')
-    = stylesheet_link_tag('pssm_viewer/pssmClass.css')
+    = javascript_include_tag('structure_viewer/nglClass')
+    = javascript_include_tag('pssm_viewer/pssmClass')
   %body
     =yield

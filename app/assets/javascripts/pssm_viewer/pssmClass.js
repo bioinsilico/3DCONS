@@ -27,11 +27,32 @@ function pssmClass( args ){
       var row = self._.map(aa[type],function(val){
         return "<td>"+val+"</td>";
       });
-      var V = self._.flatten(["<td>"+aa['index']+"</td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['a']+"</td>", "<td>"+aa['b']+"</td>"])
-      return "<tr>"+V.join("")+"</tr>";
+      var w = parseInt(aa['a']*30);
+      var c = parseInt( aa['a']/4*200 );
+      c += 55;
+      if(c>255)c=255;
+      var c1 = c;
+      var c2 = 255-c;
+      if(c2>200)c2=200;
+      //var color = "background:linear-gradient(to right, rgb(255,0,0), rgb(255,"+c2+","+c2+"), rgb(255,"+c2+","+c2+") )";
+      var color = "background:rgb(255,"+c2+","+c2+")";
+      var cons  = "<div class=\"cons_val\" style=\""+color+";height:12px;width:"+w+"px;\"></div>";
+      var V = self._.flatten(["<td><span>"+aa['index']+"</span></td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['b']+"</td>", "<td>"+aa['a']+"</td>","<td>"+cons+"</td>"])
+      return "<tr index=\""+aa['index']+"\">"+V.join("")+"</tr>";
     });
+    var head = ["A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V"];
+    head = self._.map(head,function(i){
+        return "<td>"+i+"</td>";
+    });
+    var w = parseInt(5*30);
+    var cons  = "<div class=\"cons_val\" style=\"background:white;height:12px;width:"+w+"px;\"></div>";
+    var H = self._.flatten(["<td>"+"&nbsp;"+"</td>", "<td>"+"&nbsp;"+"</td>",head, "<td>"+"&nbsp;"+"</td>", "<td>"+"&nbsp;"+"</td>","<td>"+cons+"</td>"]);
+    var table_head ="<table class=\"pssm_table\"><tr>"+H.join("")+"</tr></table>";
     var table = "<table class=\"pssm_table\">"+tbody.join("")+"</table>";
-    self.$j('#'+self.eid).html( table );
+    self.$j('#'+self.eid).html( table_head+table );
+    self.$j("table.pssm_table tr").click(function(){
+      row_click( this );
+    });
   }
 
 }
