@@ -63,15 +63,8 @@ class MainController < ApplicationController
         end
         c['residues'].each do |r|
           mapping[ c['chain_id'] ]['align'].push(r['author_residue_number'].to_i)
+          mapping[ c['chain_id'] ]['inverse'][ r['author_residue_number']  ] = mapping[ c['chain_id'] ]['align'].length-1
         end 
-      end
-    end
-    mapping.each do |i,j|
-      mapping[i]['align'] = j['align'].sort_by(&:to_i)
-      n = 0
-      mapping[i]['align'].each do |k|
-         mapping[i]['inverse'][k]=n
-         n=n+1
       end
     end
     return mapping

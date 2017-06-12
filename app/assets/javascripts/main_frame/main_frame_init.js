@@ -6,6 +6,7 @@ $j(document).ready(function(){
 
   pssm_viewer.display_table({type:current_type, iter:current_iter, chain:current_ch});
   structure_viewer.highlight_chain(globals.pdb,current_ch);
+  cons_viewer();
 
   $j("#chain_selector").change(function(){
     chain_selected();
@@ -19,5 +20,8 @@ $j(document).ready(function(){
     update_pssm();
   }); 
 
+  $j("#pssm_viewport").scroll(function(){
+    update_cons();
+  });
 
 });

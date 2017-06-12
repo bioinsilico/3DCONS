@@ -168,7 +168,7 @@ function nglClass( args ) {
                         console.log( "atom.chainid = "+atom.chainid );
                         return;
                       }
-                      if(seq_index){
+                      if(seq_index>=0){
                         mark_row(seq_index+1);
                       }else{
                         swal({

@@ -23,6 +23,7 @@ function update_pssm(){
   var current_type = $j("#type_selector").val();
   pssm_viewer.display_table({type:current_type, iter:current_iter, chain:current_ch});
   structure_viewer.highlight_chain(globals.pdb,current_ch);
+  cons_viewer();
 }
 
 function row_click(e){
@@ -38,7 +39,6 @@ function row_click(e){
   var c2 = 255-c1;
   var col = "rgb(255,"+c2+","+c2+")";
   structure_viewer.color_by_chain_simple([res_id], globals.pdb, current_ch, col);
-
 }
 
 function mark_row(n){

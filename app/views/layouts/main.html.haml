@@ -2,6 +2,8 @@
   %head
     = stylesheet_link_tag('main_frame/main_frame_style')
     = stylesheet_link_tag('pssm_viewer/pssmClass')
+    = stylesheet_link_tag('cons_viewer/cons_viewer')
+
 
     = javascript_include_tag('main_frame/main_frame_lib')
     = javascript_include_tag('main_frame/main_frame_init')
@@ -10,5 +12,6 @@
 
     = javascript_include_tag('structure_viewer/nglClass')
     = javascript_include_tag('pssm_viewer/pssmClass')
+    = javascript_include_tag('cons_viewer/cons_viewer')
   %body
     =yield
