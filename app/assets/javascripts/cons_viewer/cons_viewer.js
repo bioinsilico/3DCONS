@@ -14,7 +14,7 @@ function cons_viewer(){
   dataArray.push({x:dataArray.length,y:0});
   
   
-  var box_width = parseInt(($j("#pssm_viewport").height()-50)/30);
+  var box_width = Math.round(  ($j("#pssm_viewport").height()-50)/29 );
 
   d3.select("#cons_viewport").html("");
   svg = d3.select("#cons_viewport").append("svg").attr("height","100%").attr("width","100%");     
@@ -43,11 +43,12 @@ function cons_viewer(){
     .attr("x",x(0) )
     .attr("height",y(0))
     .attr("width",x(box_width));
+  update_cons();
 }
 
 
 function update_cons(){
-  var x = parseInt( $j("#pssm_viewport").scrollTop()/57*2 );
+  var x = Math.round( $j("#pssm_viewport").scrollTop()/29 );
   console.log( $j("#pssm_viewport").scrollTop() );
   svg.selectAll("rect").attr( "x",x_scale(x) );
 }
