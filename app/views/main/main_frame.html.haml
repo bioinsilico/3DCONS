@@ -5,7 +5,23 @@
     globals.pdb_descritpion = #{@pdb_description.to_json.html_safe};
     globals.mapping  = #{@mapping.to_json.html_safe};
   %div#header_frame
-    = select_tag(:chain_selector, options_for_select(@chain_selector))
+    %div#main_menu
+      =image_tag("3dcons_db_logo.png",height: '42')
+      %div
+        %a{:href => "/home"}
+          HOME
+        %a{:href => "/submit_form"}
+          \- RETRIEVE
+        %a{:href => "/query_form"}
+          \- QUERY
+        %a{:href => "/help"}
+          \- HELP
+      
+    %div#pdb_chains
+      %a{:href=>"https://www.ebi.ac.uk/pdbe/entry/pdb/#{@pdb}", :target=>"_blank"}
+        #{@pdb.upcase}
+      PDB CHAINS
+      = select_tag(:chain_selector, options_for_select(@chain_selector))
   %div#left_frame
     %div#structure_frame
       %div{:id => "structure_viewport", :style=>"width:100%;height:100%;"}
@@ -19,7 +35,9 @@
   %div#right_frame
     %div#pssm_frame
       %div{:id=>"pssm_control"}
+        SCORE TYPE
         = select_tag(:type_selector, options_for_select([["PSSM","pssm"],["PSFM","psfm"]]))
+        ITERATION
         = select_tag(:iter_selector, options_for_select([["2","0"],["3","1"]]))
       %div{:id=>"pssm_div"}
         %div{:id => "pssm_viewport"}     

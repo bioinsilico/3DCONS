@@ -21,34 +21,52 @@ function cons_viewer(){
   
   var width = parseInt(svg.style("width")); 
   var height = parseInt(svg.style("height"));
-  var x = d3.scaleLinear().domain([0,dataArray.length]).range([0, width]);
+
+  var a = 20;
+  var b = 35;
+
+  var x = d3.scaleLinear().domain([0,dataArray.length]).range([0, width-b]);
   x_scale = x;
-  var y = d3.scaleLinear().domain([0,5]).range([height,0]);
+  var y = d3.scaleLinear().domain([0,5]).range([height,a+5]);
   
   var curve = d3.line()
       .x(function(d) { return x(d.x); })
       .y(function(d) { return y(d.y); })
       .curve( d3.curveStepBefore );
   
-  svg.append("path")
+  var g = svg.append("g")
+    .append("path")
     .style("fill","#FFCCCC")
     .style("stroke","red")
     .style("stroke-width","1px")
     .attr("d",function(d,i){ return curve(dataArray); });
+  g.attr("transform", "translate("+b+","+(-1*a)+")");
 
-  svg.append("rect")
+  var g = svg.append("rect")
     .style("fill","none")
     .style("stroke","#C0C0C0")
-    .style("stroke-width","3px")
-    .attr("x",x(0) )
-    .attr("height",y(0))
+    .style("stroke-width","1px")
+    .attr("x",x(0.1) )
+    .attr("y",a+5 )
+    .attr("height",height-(a+5))
     .attr("width",x(box_width));
+  g.attr("transform", "translate("+b+","+(-1*a)+")");
+
+  svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate("+b+"," + (height-a) + ")")
+      .call(d3.axisBottom(x));
+
+  svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate("+25+","+(-1*a)+")")
+      .call(d3.axisLeft(y).ticks(5));
+
   update_cons();
 }
 
 
 function update_cons(){
-  var x = Math.round( $j("#pssm_viewport").scrollTop()/29 );
-  console.log( $j("#pssm_viewport").scrollTop() );
+  var x = Math.round( $j("#pssm_viewport").scrollTop()/29  );
   svg.selectAll("rect").attr( "x",x_scale(x) );
 }

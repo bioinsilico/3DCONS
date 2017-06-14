@@ -3,6 +3,14 @@
  *= require sweetalert
  *= require_tree .
 */
+body{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently*/
+}
 
 div#main_frame{
   position:absolute;
@@ -18,6 +26,54 @@ div#header_frame{
   left:0px;
   width:40%;
   height:10%;
+
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  margin:10 0 0 10;
+}
+
+div#main_menu {
+  margin:0 0 10 0;
+  height:45px;
+}
+
+div#main_menu div{
+  display:inline-block;
+  position:relative;
+  bottom:16px;
+}
+
+a{
+  text-decoration: none;
+  color:#074987;
+  font-weight:bold;
+}
+
+a:hover{
+  color:#96C8C8;;
+}
+
+div#pdb_chains{
+  font-weight:bold;
+  color:#666666;
+}
+
+div#pdb_chains select{
+  font-size: 12px;
+  height:20px;
+}
+
+div#pssm_control{
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  margin:10 0 0 10;
+  color:#666666;
+}
+
+div#pssm_control  select {
+  font-size: 12px;
+  height:20px; 
 }
 
 div#left_frame{
@@ -31,16 +87,16 @@ div#left_frame{
 div#structure_frame{
   position:absolute;
   top:0;
-  height:80%;
+  height:75%;
   width:100%;
 }
 
 div#cons_frame{
   position:absolute;
-  left:5%;
-  bottom:2%;
-  height:18%;
-  width:90%;
+  left:2%;
+  bottom:3%;
+  height:22%;
+  width:96%;
   
 }
 

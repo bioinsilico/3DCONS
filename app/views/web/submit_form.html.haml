@@ -1,0 +1,40 @@
+.ws_main_div
+  %div.example_list
+    %div.text
+      Example |pdb|
+    1lzh
+    %br
+    3aqd
+    %br
+    2vzz
+    %br
+    4tm3
+    %br
+    3tgu
+
+  %div.example_list
+    %div.text
+      Example |pdb:chain|
+    4v2s:F
+    %br
+    3n1i:A
+    %br
+    2xzq:L
+    %br
+    5l5h:E
+    %br
+    2ux1:B
+
+  .submit_form
+    = form_tag({controller: "web", action: "collect_files"}, :multipart => true, :method => :post, id: "query_form",:style=>"margin-top:20px;") do
+      %div.text
+        Input your pdb list
+      = text_area( :pdb, :list, size: "30x15" )
+      %br
+      %br
+      %div.text
+        Or upload your pdb  file list
+      = file_field_tag( :file_list )
+      %br
+      %br
+      = button_tag("Submit")

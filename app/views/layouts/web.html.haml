@@ -1,0 +1,36 @@
+%html(lang="en")
+%html(lang="en")
+  %head
+    = stylesheet_link_tag('web/web_style')
+    = javascript_include_tag('web/web_lib')
+    = javascript_include_tag('web/web_init')
+  %body
+    .logo
+      =image_tag("3dcons_db_logo.png")
+    .who
+      @
+      %a{:href=>"http://biocomp.cnb.csic.es", :target=>"_blank"} Biocomputing Unit
+      \-
+      %a{:href=>"http://www.inab.org", :target=>"_blank"} INB
+      \-
+      %a{:href=>"https://www.elixir-europe.org", :target=>"_blank"} ELIXIR
+    .options
+      %table
+        %tr
+          %td 
+            %a{:href=>"/home"} HOME
+          %td 
+            %a{:href=>"/submit_form"} RETRIEVE 
+          %td 
+            %a{:href=>"/query_form"} QUERY 
+          %td 
+            %a{:href=>"/help"} HELP
+          %td 
+            %a{:href=>"http://biocomp.cnb.csic.es/", :target=>"_blank"} ABOUT US
+    = yield
+    .footer
+      3DBIONOTES web-server was developed and is maintained at the 
+      %a{:href=>"http://biocomp.cnb.csic.es/", :target=>"_blank"} Biocomputing Unit 
+      \- 
+      %a{:href=>"http://www.cnb.csic.es/index.php/en", :target=>"_blank"} CNB 
+      by Joan Segura Mora. Citing the web-server?

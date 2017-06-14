@@ -48,5 +48,5 @@ function mark_row(n){
   var container = $j('#pssm_viewport');
   var scrollTo = row;
 
-  container.animate( {scrollTop:scrollTo.offset().top - container.offset().top + container.scrollTop()-50} );
+  container.animate( {scrollTop:scrollTo.offset().top - container.offset().top + container.scrollTop()-50 - container.height()*0.45} );
 }

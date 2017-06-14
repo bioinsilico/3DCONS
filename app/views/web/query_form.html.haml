@@ -1,0 +1,20 @@
+.ws_main_div
+  .submit_form
+    = form_tag( {controller: "main", action: "main_frame"}, :multipart => true, :method => :get, id: "query_form",:style=>"margin-top:20px;" ) do
+      %div.text
+        Search by
+        %a{:href=>"http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/pdbIDs.html" , :target=>"_blank"}
+          PDB
+        code 
+      = text_field_tag( :pdb )
+      %br
+      %br
+      = button_tag("Submit")
+      %br
+      %br
+      %br
+      %div{:style=>"font-size:16px;"}
+        Example:
+        %a{:href=>"http://3dcons.cnb.csic.es/main_frame/1B55"}
+          %b 1B55
+
