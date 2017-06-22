@@ -2,9 +2,12 @@ class MainController < ApplicationController
 
   require 'net/http'
 
+  #unzip -p /home/joan/databases/pdb_pssm/pdbOut.zip pdbOut/iterNum2/59826.step2.pssm
   PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
+  PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
   EBI_RES_LISTING_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/"
+  PDB_PSSM_PATH_CAMPINS = "/home/jsegura/databases/pdb_pssm/"
 
   def main_frame
     @pdb = params[:pdb].downcase
@@ -36,9 +39,11 @@ class MainController < ApplicationController
   end
   
   def get_pssm(seq_id,n)
-    file = PDB_PSSM_PATH+"/iterNum"+n+"/"+seq_id+".uniqSeq.fasta.step"+n+".pssm"
+    #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
+    cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+    file = `#{cmd}` 
     out = [] 
-    File.open( file ).each_line do |l|
+    file.split("\n").each do |l|
       if l =~ /^(\s+)(\d)/
         r = l.split(/\s+/)
         out.push( {'index'=>r[1], 'aa'=>r[2], 'pssm'=>r[3..22], 'psfm'=>r[23..42], 'a'=>r[43], 'b'=>r[44] } )

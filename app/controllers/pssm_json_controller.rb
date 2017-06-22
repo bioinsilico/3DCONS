@@ -3,9 +3,10 @@ class PssmJsonController < ApplicationController
   require 'net/http'
 
   PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
+  PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
   EBI_RES_LISTING_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/"
-
+  PDB_PSSM_PATH_CAMPINS = "/home/jsegura/databases/pdb_pssm/"
 
   def pssm_ch_rest
     pdb = params[:pdb].downcase
@@ -69,10 +70,12 @@ class PssmJsonController < ApplicationController
   end
 
   def get_pssm(seq_id,n,alignment)
-    file = PDB_PSSM_PATH+"/iterNum"+n+"/"+seq_id+".uniqSeq.fasta.step"+n+".pssm"
+    #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
+    cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+    file = `#{cmd}`
     out_res = []
     out_scores = [] 
-    File.open( file ).each_line do |l|
+    file.split("\n").each do |l|
       if l =~ /^(\s+)(\d)/
         r = l.split(/\s+/)
         n = r[1].to_i-1

@@ -1,8 +1,11 @@
 class WebController < ApplicationController
   PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
+  PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db"
+  PDB_PSSM_PATH_CAMPINS = "/home/jsegura/databases/pdb_pssm/"
 
   require 'zip'
+  require 'rubygems/package'
 
   def collect_files
     pdb_list = []
@@ -34,7 +37,7 @@ class WebController < ApplicationController
     pdb_collection.each do |p|
       ch_ = ";"
       if !p[1].nil?
-        ch_ = " and chain=\"#{chain}\";"
+        ch_ = " and chain=\"#{p[1]}\";"
       end
       if pdb_to_id[p[0]].nil?
         pdb_to_id[p[0]] = {}
@@ -47,13 +50,41 @@ class WebController < ApplicationController
         end
       end
     end
+
+    #tar = StringIO.new
+    #Gem::Package::TarWriter.new(tar) do |writer|
+    #  pdb_to_id.each do |p,x|
+    #    x.each do |c,y|
+    #      [2,3].each do |i|
+    #        if pdb_to_id[ p ][ c ]['statuts'][i] == 0
+    #          n = i.to_s
+    #          seq_id = pdb_to_id[ p ][ c ]['seq_id'].to_s
+    #          cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
+    #          #cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+    #          puts cmd
+    #          pssm = `#{cmd}`
+    #          writer.add_file(p+"_"+c+"_"+i.to_s+".pssm", 0644)  do |f| 
+    #              f.write(pssm)
+    #          end
+    #        end
+    #      end
+    #    end
+    #  end
+    #end
+    #tar.seek(0)
+    #binary_data = tar.string
+
     stringio = Zip::OutputStream.write_buffer do |zio|
       pdb_to_id.each do |p,x|
         x.each do |c,y|
           [2,3].each do |i|
             if pdb_to_id[ p ][ c ]['statuts'][i] == 0
-              file = PDB_PSSM_PATH+"/iterNum"+i.to_s+"/"+pdb_to_id[ p ][ c ]['seq_id'].to_s+".uniqSeq.fasta.step"+i.to_s+".pssm"
-              pssm  = File.open(file, "r").read
+              n = i.to_s
+              seq_id = pdb_to_id[ p ][ c ]['seq_id'].to_s
+              #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
+              cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+              puts cmd
+              pssm = `#{cmd}`
               zio.put_next_entry(p+"_"+c+"_"+i.to_s+".pssm")
               zio.write pssm
             end
@@ -62,6 +93,7 @@ class WebController < ApplicationController
       end
     end
     binary_data = stringio.string
+    cookies[:download_start] = true
     send_data(binary_data, :type => 'application/zip', :filename => "pssm_files.zip")
   end
 end
