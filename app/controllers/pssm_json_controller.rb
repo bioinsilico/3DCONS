@@ -70,8 +70,7 @@ class PssmJsonController < ApplicationController
   end
 
   def get_pssm(seq_id,n,alignment)
-    #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
-    cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+    cmd = "zcat "+PDB_PSSM_PATH+"/compressed/"+seq_id+".step"+n+".pssm.gz"
     file = `#{cmd}`
     out_res = []
     out_scores = [] 

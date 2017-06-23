@@ -2,7 +2,6 @@ class MainController < ApplicationController
 
   require 'net/http'
 
-  #unzip -p /home/joan/databases/pdb_pssm/pdbOut.zip pdbOut/iterNum2/59826.step2.pssm
   PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
   PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
@@ -39,8 +38,7 @@ class MainController < ApplicationController
   end
   
   def get_pssm(seq_id,n)
-    #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
-    cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
+    cmd = "zcat "+PDB_PSSM_PATH+"/compressed/"+seq_id+".step"+n+".pssm.gz"
     file = `#{cmd}` 
     out = [] 
     file.split("\n").each do |l|

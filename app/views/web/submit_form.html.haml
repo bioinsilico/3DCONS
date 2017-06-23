@@ -26,6 +26,8 @@
     2ux1:B
 
   .submit_form
+    .wait_div{:style=>"display:none;width:235px;"}
+      =image_tag("wait.gif")
     = form_tag({controller: "web", action: "collect_files"}, :multipart => true, :method => :post, id: "query_form",:style=>"margin-top:20px;") do
       %div.text
         Input your pdb list

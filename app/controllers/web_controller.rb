@@ -34,6 +34,7 @@ class WebController < ApplicationController
     end
     db = SQLite3::Database.new PDB_PSSM_DB
     pdb_to_id = {}
+    n_files = 0
     pdb_collection.each do |p|
       ch_ = ";"
       if !p[1].nil?
@@ -47,53 +48,26 @@ class WebController < ApplicationController
         pdb_to_id[ p[0] ][ r[1] ]['statuts'] = {}
         db.execute( "select stepNum,status from pssmsTableUniref100 where seqId = #{r[2]};" ) do |s|
           pdb_to_id[ p[0] ][ r[1] ]['statuts'][s[0]] = s[1]
+          n_files += 1
         end
       end
     end
 
-    #tar = StringIO.new
-    #Gem::Package::TarWriter.new(tar) do |writer|
-    #  pdb_to_id.each do |p,x|
-    #    x.each do |c,y|
-    #      [2,3].each do |i|
-    #        if pdb_to_id[ p ][ c ]['statuts'][i] == 0
-    #          n = i.to_s
-    #          seq_id = pdb_to_id[ p ][ c ]['seq_id'].to_s
-    #          cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
-    #          #cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
-    #          puts cmd
-    #          pssm = `#{cmd}`
-    #          writer.add_file(p+"_"+c+"_"+i.to_s+".pssm", 0644)  do |f| 
-    #              f.write(pssm)
-    #          end
-    #        end
-    #      end
-    #    end
-    #  end
-    #end
-    #tar.seek(0)
-    #binary_data = tar.string
-
-    stringio = Zip::OutputStream.write_buffer do |zio|
-      pdb_to_id.each do |p,x|
-        x.each do |c,y|
-          [2,3].each do |i|
-            if pdb_to_id[ p ][ c ]['statuts'][i] == 0
-              n = i.to_s
-              seq_id = pdb_to_id[ p ][ c ]['seq_id'].to_s
-              #cmd = "unzip -p "+PDB_PSSM_ZIP+" pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm"
-              cmd ="ssh jsegura@campins \"cat "+PDB_PSSM_PATH_CAMPINS+"/pdbOut/iterNum"+n+"/"+seq_id+".step"+n+".pssm\""
-              puts cmd
-              pssm = `#{cmd}`
-              zio.put_next_entry(p+"_"+c+"_"+i.to_s+".pssm")
-              zio.write pssm
-            end
+    file_string = ""
+    pdb_to_id.each do |p,x|
+      x.each do |c,y|
+        [2,3].each do |i|
+          if pdb_to_id[ p ][ c ]['statuts'][i] == 0
+            file_string += "pssm/"+p+"_"+c+"_"+i.to_s+".pssm.gz\\n" 
           end
         end
       end
     end
-    binary_data = stringio.string
+    file_string = file_string.chop.chop
+    cmd = "printf \""+file_string+"\" | tar -h -c -f - -C "+PDB_PSSM_PATH+" -T -"
+    binary_data = `#{cmd}`
+
     cookies[:download_start] = true
-    send_data(binary_data, :type => 'application/zip', :filename => "pssm_files.zip")
+    send_data(binary_data, :type => 'application/tar', :filename => "pssm_files.tar")
   end
 end
