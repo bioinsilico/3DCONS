@@ -1,2 +1,62 @@
+= stylesheet_link_tag('web/help_style.css')
 .ws_main_div
-  HELP
+  %div{:class=>"index1"}
+    %a{:href=>"#accessing"} - ACCESING 3DCONS
+  %div{:class=>"index2"}
+    %a{:href=>"#pdb"} - PDB ENTRY
+  %div{:class=>"index2"}
+    %a{:href=>"#restful"} - RESTFUL SERVICE
+  %div{:class=>"index2"}
+    %a{:href=>"#tarball"} - RETRIEVE PSSM FILES
+  %div{:class=>"index1"}
+    %a{:href=>"#gui"} - 3DCONS GUI
+  %br
+  %br
+
+  %div{:class=>"section", :id=>"accessing"}ACCESING 3DCONS
+  %div{:class=>"section_text"}
+    3DCONS data can be accessed in three different ways: (1) single PDB entries can be explored through the web browser, (2) a RESTful service is available to retrieve PSSM data of PDB entries in JSON format and (3) a list of PDB ids can be submitted so that the web server will compile a tar file with the desired PSSM files.
+
+  %div{:class=>"section", :id=>"pdb"}PDB ENTRY
+  %div{:class=>"section_text"}
+    3DCONS can be easily  accessed through a PDB entry using the web  form available under “Query” (Figure #{x=1}A). Type the PDB code into the text  field (Figure #{x=1}B) and press the “Submit” button.
+    %div{:class=>"section_image"}
+      =image_tag("pdb_query.png")
+      %div{:class=>"legend"}Figure #{x}
+
+  %div{:class=>"section", :id=>"#restful"}RESTFUL SERVICE
+  %div{:class=>"section_text"}
+    The RESTful service can be accessed via http request codifying the URL as
+    %br
+    %b http://3dcons.cnb.csic.es/pssm_json/&lt;PDB&gt;
+    %br
+    E.g. 
+    %a{:href=>"http://3dcons.cnb.csic.es/pssm_json/101M", :target=>"_blank"}http://3dcons.cnb.csic.es/pssm_json/101M
+    %br
+    Or if only information for a single chain is needed
+    %br
+    %b http://3dcons.cnb.csic.es/pssm_json/&lt;PDB&gt;/&lt;CH&gt;
+    %br
+    E.g.  
+    %a{:href=>"http://3dcons.cnb.csic.es/pssm_json/2UZI/R", :target=>"_blank"}http://3dcons.cnb.csic.es/pssm_json/2UZI/R
+    %br
+    Figure #{x=x+1} describes how the PSSM/PSFM data is encoded into json format
+    %div{:class=>"section_image"}
+      =image_tag("pssm_json.png")
+      %div{:class=>"legend"}Figure #{x}
+
+  %div{:class=>"section", :id=>"#tarball"}RETRIEVE PSSM FILES
+  %div{:class=>"section_text"}
+    The web application provides a form to retrieve a collection of PSSM files given a list of PDB ids. The form is available under the "RETRIEVE" option (Figure #{x=x+1}A) and the PDB list can be pasted in the text area field (Figure #{x=x}B) or submitted as a one-column text file (Figure #{x=x}C). Once the PDB list is ready click the "Submit" button and the web server will compile a tar file with the requested PSSM files.
+    %div{:class=>"section_image"}
+      =image_tag("submit_form.png")
+      %div{:class=>"legend"}Figure #{x}
+
+  %div{:class=>"section", :id=>"gui"}3DCONS GUI
+  %div{:class=>"section_text"}
+    The web application provides an intuitive and interactive graphical environment to display PSSM data at structural and sequence level. A 3D viewer shows the protein structure and a table contains the PSSM data for each protein residue (Figure #{x=x+1}). When the PDB entry contains more than one chain, the visualized  chain can be changed using the the selector on the top of the  3D  viewer (Figure #{x}A). The panel located at the right site contains the PSSM data that  can be switched to PSFM information using  the “SCORE TYPE” selector (Figure #{x}B). The “ITERATION” selector (Figure #{x}C) allows to change the PSIBLAST iteration used to compute the data. The PSSM table rows can be clicked to highlight the corresponding residue at structural level (Figure #{x}D). Also, when a residue in the structure is clicked  (SHIFT+left click) the table row corresponding to the selected residue will  be highlighted.
+    %div{:class=>"section_image"}
+      =image_tag("gui.png")
+      %div{:class=>"legend"}Figure #{x}   
+  %br
+  %br
