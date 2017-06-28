@@ -9,14 +9,16 @@ class WebController < ApplicationController
 
   def collect_files
     pdb_list = []
+    failed_files = ""
+
     if params[:pdb] && params[:pdb][:list]
-      pdb_list.concat params[:pdb][:list].lines.map(&:chomp)
+      pdb_list.concat params[:pdb][:list].lines.map(&:strip).map(&:chomp)
     end
 
     file_data = params[:file_list]
     if file_data.respond_to?(:read)
       file_content = file_data.read
-      pdb_list.concat file_content.lines.map(&:chomp)
+      pdb_list.concat file_content.lines.map(&:strip).map(&:chomp)
     else
        logger.error "Bad file_data: #{file_data.class.name}: #{file_data.inspect}"
     end
@@ -33,8 +35,11 @@ class WebController < ApplicationController
       end
     end
     db = SQLite3::Database.new PDB_PSSM_DB
+    db_errors = {}
+    db.execute( "select * from statusTable;" ) do |r|
+      db_errors[r[0]]=r[1];
+    end
     pdb_to_id = {}
-    n_files = 0
     pdb_collection.each do |p|
       ch_ = ";"
       if !p[1].nil?
@@ -43,13 +48,21 @@ class WebController < ApplicationController
       if pdb_to_id[p[0]].nil?
         pdb_to_id[p[0]] = {}
       end
+      flag = 1
       db.execute( "select * from pdbsTable where pdb=\"#{p[0]}\""+ch_ ) do |r|
         pdb_to_id[ p[0] ][ r[1] ] = { 'seq_id'=>r[2] }
         pdb_to_id[ p[0] ][ r[1] ]['statuts'] = {}
         db.execute( "select stepNum,status from pssmsTableUniref100 where seqId = #{r[2]};" ) do |s|
           pdb_to_id[ p[0] ][ r[1] ]['statuts'][s[0]] = s[1]
-          n_files += 1
         end
+        flag = 0
+      end
+      if flag == 1
+        pdb = p[0]
+        if !p[1].nil?
+          pdb += ":"+p[1]
+        end
+        failed_files += "PDB "+pdb+" NOT FOUND\n"
       end
     end
 
@@ -58,16 +71,21 @@ class WebController < ApplicationController
       x.each do |c,y|
         [2,3].each do |i|
           if pdb_to_id[ p ][ c ]['statuts'][i] == 0
-            file_string += "pssm/"+p+"_"+c+"_"+i.to_s+".pssm.gz\\n" 
+            file_string += "pssm/"+p+"_"+c+"_"+i.to_s+".pssm.zip\\n" 
+          elsif !pdb_to_id[ p ][ c ]['statuts'][i].nil?
+            puts  pdb_to_id[ p ][ c ]['statuts'][i]
+            failed_files += p+"_"+c+"_"+i.to_s+".pssm\n"
+            failed_files += "\t"+db_errors[ pdb_to_id[ p ][ c ]['statuts'][i] ]+"\n"
           end
         end
       end
     end
     file_string = file_string.chop.chop
-    cmd = "printf \""+file_string+"\" | tar -h -c -f - -C "+PDB_PSSM_PATH+" -T -"
+    
+    cmd = "cd "+PDB_PSSM_PATH+" && printf \""+failed_files+"\" > pssm/errorlog.txt && printf \"pssm/errorlog.txt\\n"+file_string+"\" | zip -@ -r - && rm pssm/errorlog.txt"
     binary_data = `#{cmd}`
 
     cookies[:download_start] = true
-    send_data(binary_data, :type => 'application/tar', :filename => "pssm_files.tar")
+    send_data(binary_data, :type => 'application/zip', :filename => "pssm_files.zip")
   end
 end

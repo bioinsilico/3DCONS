@@ -38,7 +38,7 @@ class MainController < ApplicationController
   end
   
   def get_pssm(seq_id,n)
-    cmd = "zcat "+PDB_PSSM_PATH+"/compressed/"+seq_id+".step"+n+".pssm.gz"
+    cmd = "unzip -p "+PDB_PSSM_PATH+"/compressed/"+seq_id+".step"+n+".pssm.zip"
     file = `#{cmd}` 
     out = [] 
     file.split("\n").each do |l|
@@ -58,17 +58,25 @@ class MainController < ApplicationController
       puts "Error downloading data:\n#{$!}"
     end
     mapping = {  }
-    ali = JSON.parse(data)
-    ali[pdb]['molecules'].each do |m|
-      m['chains'].each do |c|
-        if mapping[ c['chain_id'] ].nil?
-           mapping[ c['chain_id'] ] = {'align'=>[], 'inverse'=>{}}
+    begin 
+      ali = JSON.parse(data)
+    rescue
+      ali = {}
+    end
+    if ali[pdb]
+      ali[pdb]['molecules'].each do |m|
+        m['chains'].each do |c|
+          if mapping[ c['chain_id'] ].nil?
+             mapping[ c['chain_id'] ] = {'align'=>[], 'inverse'=>{}}
+          end
+          c['residues'].each do |r|
+            mapping[ c['chain_id'] ]['align'].push(r['author_residue_number'].to_i)
+            mapping[ c['chain_id'] ]['inverse'][ r['author_residue_number']  ] = mapping[ c['chain_id'] ]['align'].length-1
+          end 
         end
-        c['residues'].each do |r|
-          mapping[ c['chain_id'] ]['align'].push(r['author_residue_number'].to_i)
-          mapping[ c['chain_id'] ]['inverse'][ r['author_residue_number']  ] = mapping[ c['chain_id'] ]['align'].length-1
-        end 
       end
+    else
+      mapping = {'error'=>'PDB '+pdb+' not found'}
     end
     return mapping
   end
