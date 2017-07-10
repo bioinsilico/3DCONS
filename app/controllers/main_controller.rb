@@ -21,30 +21,32 @@ class MainController < ApplicationController
         pdb_description[ r[1] ]['seq'] = s[0]
       end
       pdb_description[ r[1] ]['status'] = [0,0]
-      db.execute( "select stepNum,status from pssmsTableUniref100 where seqId = #{r[2]};" ) do |s|
+      db.execute( "select stepNum,status from pdbChainIterStatus where pdb=\"#{@pdb.downcase}\" and chain=\"#{r[1]}\";" ) do |s|
         pdb_description[ r[1] ]['status'][ s[0]-2 ] = s[1]
       end
       pdb_description[ r[1] ][ 'scores' ] = [nil,nil]
       if pdb_description[ r[1] ]['status'][0] == 0
         @chains.push( r[1] )
         @chain_selector.push( [r[1],r[1]] )
-        pdb_description[ r[1] ][ 'scores' ][0] = get_pssm(r[2].to_s,"2")
+        pdb_description[ r[1] ][ 'scores' ][0] = get_pssm(@pdb.downcase,r[1],"2")
       end
       if pdb_description[ r[1] ]['status'][1] == 0
-        pdb_description[ r[1] ][ 'scores' ][1] = get_pssm(r[2].to_s,"3")
+        pdb_description[ r[1] ][ 'scores' ][1] = get_pssm(@pdb.downcase,r[1],"3")
       end
     end
     @pdb_description = pdb_description
   end
   
-  def get_pssm(seq_id,n)
-    cmd = "unzip -p "+PDB_PSSM_PATH+"/compressed/"+seq_id+".step"+n+".pssm.zip"
+  def get_pssm(pdb,chain,n)
+    cmd = "unzip -p "+PDB_PSSM_PATH+"/compressed/"+pdb+"_"+chain+"_"+n+".pssm.zip"
     file = `#{cmd}` 
     out = [] 
+    index = 1
     file.split("\n").each do |l|
       if l =~ /^(\s+)(\d)/
         r = l.split(/\s+/)
-        out.push( {'index'=>r[1], 'aa'=>r[2], 'pssm'=>r[3..22], 'psfm'=>r[23..42], 'a'=>r[43], 'b'=>r[44] } )
+        out.push( {'index'=>index, 'res_id'=>r[1],'aa'=>r[2], 'pssm'=>r[3..22], 'psfm'=>r[23..42], 'a'=>r[43], 'b'=>r[44] } )
+        index+=1
       end
     end
     return out

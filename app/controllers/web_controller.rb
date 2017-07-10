@@ -52,7 +52,7 @@ class WebController < ApplicationController
       db.execute( "select * from pdbsTable where pdb=\"#{p[0]}\""+ch_ ) do |r|
         pdb_to_id[ p[0] ][ r[1] ] = { 'seq_id'=>r[2] }
         pdb_to_id[ p[0] ][ r[1] ]['statuts'] = {}
-        db.execute( "select stepNum,status from pssmsTableUniref100 where seqId = #{r[2]};" ) do |s|
+        db.execute( "select stepNum,status from pdbChainIterStatus where pdb=\"#{p[0]}\" and chain=\"#{r[1]}\";" ) do |s|
           pdb_to_id[ p[0] ][ r[1] ]['statuts'][s[0]] = s[1]
         end
         flag = 0

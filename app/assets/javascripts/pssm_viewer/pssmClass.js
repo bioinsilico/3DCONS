@@ -37,8 +37,8 @@ function pssmClass( args ){
       //var color = "background:linear-gradient(to right, rgb(255,0,0), rgb(255,"+c2+","+c2+"), rgb(255,"+c2+","+c2+") )";
       var color = "background:rgb(255,"+c2+","+c2+")";
       var cons  = "<div class=\"cons_val\" style=\""+color+";height:12px;width:"+w+"px;\"></div>";
-      var V = self._.flatten(["<td><span>"+aa['index']+"</span></td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['b']+"</td>", "<td>"+aa['a']+"</td>","<td>"+cons+"</td>"])
-      return "<tr index=\""+aa['index']+"\">"+V.join("")+"</tr>";
+      var V = self._.flatten(["<td><span>"+aa['res_id']+"</span></td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['b']+"</td>", "<td>"+aa['a']+"</td>","<td>"+cons+"</td>"])
+      return "<tr title=\"RES ID "+aa['res_id']+"&#013;SEQ ID "+aa['index']+"\" index=\""+aa['index']+"\">"+V.join("")+"</tr>";
     });
     var head = ["A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V"];
     head = self._.map(head,function(i){
