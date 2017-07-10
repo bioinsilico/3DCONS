@@ -43,7 +43,7 @@ class MainController < ApplicationController
     out = [] 
     index = 1
     file.split("\n").each do |l|
-      if l =~ /^(\s+)(\d)/
+      if l =~ /^(\s+)(\-?)(\d)/
         r = l.split(/\s+/)
         out.push( {'index'=>index, 'res_id'=>r[1],'aa'=>r[2], 'pssm'=>r[3..22], 'psfm'=>r[23..42], 'a'=>r[43], 'b'=>r[44] } )
         index+=1

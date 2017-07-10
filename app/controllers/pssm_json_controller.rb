@@ -77,7 +77,7 @@ class PssmJsonController < ApplicationController
     out_scores = []
     index = 1
     file.split("\n").each do |l|
-      if l =~ /^(\s+)(\d)/
+      if l =~ /^(\s+)(\-?)(\d)/
         r = l.split(/\s+/)
         out_res.push( {'index'=>index, 'res_id'=>r[1].to_i,'aa'=>r[2] } )
         out_scores.push( {'pssm'=>r[3..22], 'psfm'=>r[23..42], 'a'=>r[43], 'b'=>r[44] } )
