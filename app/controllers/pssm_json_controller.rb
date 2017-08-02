@@ -23,7 +23,7 @@ class PssmJsonController < ApplicationController
         statuts[ s[0]-2 ] = s[1]
       end
       if statuts[0] == 0
-        x, y = get_pssm(r[2].to_s,"2",alignment[ r[1] ])
+        x, y = get_pssm(pdb.downcase,chain,"2")
         x.each_with_index do |value,index|
           z = value
           z['iter'] = {2=>y[index]}
@@ -31,7 +31,7 @@ class PssmJsonController < ApplicationController
         end
       end
       if statuts[1] == 0
-        x, y = get_pssm(r[2].to_s,"3",alignment[ r[1] ])
+        x, y = get_pssm(pdb.downcase,chain,"3")
         y.each_with_index do |value,index|
           pdb_description[ r[1] ][index]['iter'][3]=value
         end
