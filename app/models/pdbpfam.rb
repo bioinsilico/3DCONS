@@ -1,0 +1,2 @@
+class Pdbpfam < ApplicationRecord
+end

@@ -18,12 +18,23 @@ function pssmClass( args ){
     self.display_table( opt );
   }
 
+  self.is_domain = function( n,chain ){
+    flag = false;
+    var DOM = globals.dom[chain];
+    self._.map(DOM, function(d,i){
+      if( n >= globals.mapping[chain].inverse[d.begin] && n<=globals.mapping[chain].inverse[d.end] )flag= true;
+      
+    });
+    return flag;
+  }
+
   self.display_table =  function( opt ){
     var type = opt.type;
     var iter  = opt.iter;
     var chain = opt.chain;
     var X = self.data[chain]['scores'][iter];
-    var tbody = self._.map( X, function( aa ){
+
+    var tbody = self._.map( X, function( aa, i ){
       var row = self._.map(aa[type],function(val){
         return "<td>"+val+"</td>";
       });
@@ -34,13 +45,20 @@ function pssmClass( args ){
       var c1 = c;
       var c2 = 255-c;
       if(c2>200)c2=200;
-      //var color = "background:linear-gradient(to right, rgb(255,0,0), rgb(255,"+c2+","+c2+"), rgb(255,"+c2+","+c2+") )";
       var color = "background:rgb(255,"+c2+","+c2+")";
       var cons  = "<div class=\"cons_val\" style=\""+color+";height:12px;width:"+w+"px;\"></div>";
-      var V = self._.flatten(["<td><span>"+aa['res_id']+"</span></td>", "<td>"+aa['aa']+"</td>", row, "<td>"+aa['b']+"</td>", "<td>"+aa['a']+"</td>","<td>"+cons+"</td>"])
+      var dom_cell_class = "";
+      var dom_cell_content = "";
+      if( self.is_domain(i,chain) ){
+        dom_cell_class=" is_domain";
+      }else{
+        dom_cell_content = "<div><div class=\"non_domain\">&nbsp;</div></div>";
+      }
+      var V = self._.flatten(["<td><span>"+aa['res_id']+"</span></td>", "<td class=\"dom_cell"+dom_cell_class+"\">"+dom_cell_content+"</td>","<td>"+aa['aa']+"</td>", row, "<td>"+aa['b']+"</td>", "<td>"+aa['a']+"</td>","<td>"+cons+"</td>"])
       return "<tr title=\"RES ID "+aa['res_id']+"&#013;SEQ ID "+aa['index']+"\" index=\""+aa['index']+"\">"+V.join("")+"</tr>";
     });
-    var head = ["A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V"];
+
+    var head = [" ","A","R","N","D","C","Q","E","G","H","I","L","K","M","F","P","S","T","W","Y","V"];
     head = self._.map(head,function(i){
         return "<td>"+i+"</td>";
     });

@@ -36,27 +36,70 @@ table.pssm_table tr td{
   border-bottom: 1px solid white;
 }
 
+table.pssm_table tr td.is_domain{
+  background-color:rgb(255,190,230);
+  border-top: 1px solid rgb(255,190,230);
+  border-bottom: 1px solid rgb(255,190,230);
+}
+
+table.pssm_table tr td div{
+  width: 5px;
+  margin: auto;
+  position:absolute;
+  height:29px;
+}
+
+table.pssm_table tr td div div.non_domain{
+  background-color:rgb(155,155,155);
+  border-top: 1px solid rgb(155,155,155);
+  border-bottom: 1px solid rgb(155,155,155);
+  width: 5px;
+  position:relative;
+  height:27px;
+  left:10px;
+  bottom:14px;
+}
+
+
 table.pssm_table tr:hover td{
   border-top: 1px double red;
   border-bottom: 1px double red;
 }
+
+table.pssm_table tr:hover td div div.non_domain{
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
+  z-index:1000000;
+  height:28px;
+  bottom:15;
+}
+
 
 table.pssm_table tr.marked td{
   border-top: 1px double red;
   border-bottom: 1px double red;
 }
 
+table.pssm_table tr.marked td div div.non_domain{
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
+  z-index:1000000;
+  height:28px;
+  bottom:15;
+}
+
+
 table.pssm_table:first-child tr:hover td{
   border-top: 1px double white;
   border-bottom: 1px double white;
 }
 
-table.pssm_table tr:hover td:nth-child(25){
+table.pssm_table tr:hover td:nth-child(26){
   border-top: 1px double white;
   border-bottom: 1px double white;
 }
 
-table.pssm_table tr.marked td:nth-child(25){
+table.pssm_table tr.marked td:nth-child(26){
   border-top: 1px double white;
   border-bottom: 1px double white;
 }
@@ -77,22 +120,22 @@ table.pssm_table:first-child tr:hover td:first-child{
   border-left: 1px double white;
 }
 
-table.pssm_table tr td:nth-child(24){
+table.pssm_table tr td:nth-child(25){
   border-right: 1px double white;
 }
 
-table.pssm_table tr:hover td:nth-child(24){
+table.pssm_table tr:hover td:nth-child(25){
   border-right: 1px double red;
 }
 
-table.pssm_table tr.marked td:nth-child(24){
+table.pssm_table tr.marked td:nth-child(25){
   border-right: 1px double red;
 }
 
-table.pssm_table:first-child tr:hover td:nth-child(24){
+table.pssm_table:first-child tr:hover td:nth-child(25){
   border-right: 1px double white;
 }
-table.pssm_table:first-child tr:hover td:nth-child(24){
+table.pssm_table:first-child tr:hover td:nth-child(25){
   border-right: 1px double white;
 }
 
@@ -118,26 +161,26 @@ table.pssm_table tr td:first-child span{
   visibility:hidden;
 }
 
-table.pssm_table tr td:nth-child(2){
+table.pssm_table tr td:nth-child(3){
   font-weight:bold;
   text-align:center;
   width:50px;
 }
 
-table.pssm_table tr td:nth-child(3){
+table.pssm_table tr td:nth-child(4){
   padding-left:15px;
 }
 
-table.pssm_table tr td:nth-child(23){
+table.pssm_table tr td:nth-child(24){
   width:80px;
 }
 
-table.pssm_table tr td:nth-child(24){
+table.pssm_table tr td:nth-child(25){
   width:50px;
   padding-right:10px;
 }
 
-table.pssm_table tr td:nth-child(25){
+table.pssm_table tr td:nth-child(26){
   width:155px;
 }
 
@@ -148,3 +191,5 @@ table.pssm_table tr:first-child td:first-child span{
 table.pssm_table tr:nth-child(10n) td:first-child span{
   visibility:visible;
 }
+
+

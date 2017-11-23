@@ -88,7 +88,7 @@ div#left_frame{
 div#structure_frame{
   position:absolute;
   top:0;
-  height:75%;
+  height:67%;
   width:100%;
 }
 
@@ -96,7 +96,7 @@ div#cons_frame{
   position:absolute;
   left:2%;
   bottom:3%;
-  height:22%;
+  height:30%;
   width:96%;
   
 }

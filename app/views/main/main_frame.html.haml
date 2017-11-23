@@ -10,6 +10,7 @@
       globals.chains = #{@chains.to_json.html_safe};
       globals.pdb_descritpion = #{@pdb_description.to_json.html_safe};
       globals.mapping  = #{@mapping.to_json.html_safe};
+      globals.dom = #{@dom.to_json.html_safe};
     %div#header_frame
       %div#main_menu
         =image_tag("3dcons_db_logo.png",height: '42')

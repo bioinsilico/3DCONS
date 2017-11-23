@@ -11,6 +11,7 @@ class MainController < ApplicationController
   def main_frame
     @pdb = params[:pdb].downcase
     @mapping = res_alignment(@pdb)
+    @dom = get_pfam(params[:pdb].upcase)
     @chains = []
     @chain_selector = []
     pdb_description  =  {}
@@ -81,5 +82,13 @@ class MainController < ApplicationController
       mapping = {'error'=>'PDB '+pdb+' not found'}
     end
     return mapping
+  end
+
+  def get_pfam(pdb)
+    pfam = Pdbpfam.find_by(pdbId: pdb)
+    if pfam.nil?
+      return {}
+    end 
+    return JSON.parse(pfam.data)
   end
 end
