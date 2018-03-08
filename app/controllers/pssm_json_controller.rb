@@ -2,11 +2,11 @@ class PssmJsonController < ApplicationController
 
   require 'net/http'
 
-  PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
+  PDB_PSSM_PATH = "/services/pdb_pssm/databases/pdb_pssm/"
   PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
   EBI_RES_LISTING_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/"
-  PDB_PSSM_PATH_CAMPINS = "/home/jsegura/databases/pdb_pssm/"
+  PDB_PSSM_PATH_CAMPINS = "/services/pdb_pssm/databases/pdb_pssm/"
 
   def pssm_ch_rest
     pdb = params[:pdb].downcase
@@ -19,7 +19,7 @@ class PssmJsonController < ApplicationController
       pdb_description[ r[1] ] = []
       statuts = [0,0]
       #db.execute( "select stepNum,status from pssmsTableUniref100 where seqId = #{r[2]};" ) do |s|
-      db.execute( "select stepNum,status from pdbChainIterStatus where pdb=\"#{pdb.downcase}\" and chain=\"#{chain}\";" ) do |s|
+      db.execute( "select stepNum,status_uniref100 from pdbChainIterStatus where pdb=\"#{pdb.downcase}\" and chain=\"#{chain}\";" ) do |s|
         statuts[ s[0]-2 ] = s[1]
       end
       if statuts[0] == 0
@@ -49,7 +49,7 @@ class PssmJsonController < ApplicationController
     db.execute( "select * from pdbsTable where pdb=\"#{pdb.downcase}\";" ) do |r|
       pdb_description[ r[1] ] = []
       statuts = [0,0]
-      db.execute( "select stepNum,status from pdbChainIterStatus where pdb=\"#{pdb.downcase}\" and chain=\"#{r[1]}\";" ) do |s|
+      db.execute( "select stepNum,status_uniref100 from pdbChainIterStatus where pdb=\"#{pdb.downcase}\" and chain=\"#{r[1]}\";" ) do |s|
         statuts[ s[0]-2 ] = s[1]
       end
       if statuts[0] == 0
@@ -71,7 +71,7 @@ class PssmJsonController < ApplicationController
   end
 
   def get_pssm(pdb,ch,n)
-    cmd = "unzip -p "+PDB_PSSM_PATH+"/compressed/"+pdb+"_"+ch+"_"+n+".pssm.zip"
+    cmd = "unzip -p "+PDB_PSSM_PATH+"/pssm/"+pdb+"_"+ch+"_"+n+".pssm.zip"
     file = `#{cmd}`
     out_res = []
     out_scores = []

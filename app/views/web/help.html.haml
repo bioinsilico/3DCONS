@@ -10,6 +10,9 @@
     %a{:href=>"#tarball"} - RETRIEVE PSSM FILES
   %div{:class=>"index1"}
     %a{:href=>"#gui"} - 3DCONS GUI
+  %div{:class=>"index1"}
+    %a{:href=>"#refs"} - REFERENCES
+
   %br
   %br
 
@@ -54,9 +57,19 @@
 
   %div{:class=>"section", :id=>"gui"}3DCONS GUI
   %div{:class=>"section_text"}
-    The web application provides an intuitive and interactive graphical environment to display PSSM data at structural and sequence level. A 3D viewer shows the protein structure and a table contains the PSSM data for each protein residue (Figure #{x=x+1}). When the PDB entry contains more than one chain, the visualized  chain can be changed using the the selector on the top of the  3D  viewer (Figure #{x}A). The panel located at the right site contains the PSSM data that  can be switched to PSFM information using  the “SCORE TYPE” selector (Figure #{x}B). The “ITERATION” selector (Figure #{x}C) allows to change the PSIBLAST iteration used to compute the data. The PSSM table rows can be clicked to highlight the corresponding residue at structural level (Figure #{x}D). Also, when a residue in the structure is clicked  (SHIFT+left click) the table row corresponding to the selected residue will  be highlighted.
+    The web application provides an intuitive and interactive graphical environment to display PSSM data at structural and sequence level. The information is organized in 3 different panels (Figure 4): 3D viewer (A1), sequence information  panel (B1 and B2) and PSSM profile (C1, C2 and C3). The 3D viewer displays the protein atomic structure. The sequence panel shows the amount of information per amino acid (B1, reference [1]) and the location of Pfam domains in the protein (B2). The PSSM profile panel contains a table displaying the information calculated by the PSI-BLAST program. The information is divided in three sections. The first section (C1) contains the residue identifier (displayed every 10 residues), a color flag indicating whether a residue is part of domain (pink) or not (gray) and the residue type. The second section (C2) displays the scores of the PSSM profiles for the 20 different amino acids [1]. Finally, the  RWP and the IP columns (C3) are the relative weight of non-gap sequences to pseudocounts [1,2] and the information per position [1], respectively.     
     %div{:class=>"section_image"}
       =image_tag("gui.png")
       %div{:class=>"legend"}Figure #{x}   
+    When the PDB entry contains more than one chain, the visualized  chain can be changed using the the selector on the top of the  3D  viewer (Figure D1).The PSSM data that  can be switched to PSFM information using the “SCORE TYPE” selector and the “ITERATION” selector allows to change the PSIBLAST iteration used to compute the data (D2). Also, the PSSM table rows can be clicked to highlight the corresponding residue at structural level. On the other side, when a residue in the structure is clicked  (SHIFT+left click) the table row corresponding to the selected residue will  be highlighted.
+
+  %div{:class=>"section", :id=>"refs"} REFERENCES
+  %div{:class=>"section_text"}
+    1 - Altschul SF, Madden TL, Schäffer AA, Zhang J, Zhang Z, Miller W, Lipman DJ. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. Nucleic Acids Res. 1997 Sep 1;25(17):3389-402.
+    %br
+    2 - Henikoff S, Henikoff JG. Position-based sequence weights. J Mol Biol. 1994 Nov 4;243(4):574-8.
+
+
+
   %br
   %br

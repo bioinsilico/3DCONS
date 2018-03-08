@@ -1,4 +1,4 @@
-var svg, x_scale;
+var svg, x_scale, box_width, seq_len;
 
 
 function cons_viewer(){
@@ -15,7 +15,7 @@ function cons_viewer(){
   dataArray.push({x:dataArray.length,y:0});
   
   
-  var box_width = Math.round(  ($j("#pssm_viewport").height()-50)/29 );
+  box_width = Math.round(  ($j("#pssm_viewport").height()-50)/29 );
 
   d3.select("#cons_viewport").html("");
   svg = d3.select("#cons_viewport").append("svg").attr("height","100%").attr("width","100%");     
@@ -23,11 +23,12 @@ function cons_viewer(){
   var width = parseInt(svg.style("width")); 
   var height = parseInt(svg.style("height"));
 
-  var a = 20;
-  var b = 35;
+  var a = 40;
+  var b = 50;
 
-  var x = d3.scaleLinear().domain([0,dataArray.length]).range([0, width-b]);
+  var x = d3.scaleLinear().domain([0,dataArray.length-2]).range([0, width-b]);
   x_scale = x;
+  seq_len = dataArray.length-2;
   var y = d3.scaleLinear().domain([0,5]).range([height-60,a+5]);
   
   var curve = d3.line()
@@ -53,14 +54,30 @@ function cons_viewer(){
 
   g.attr("transform", "translate("+b+","+(-1*a)+")");
 
+  var g = svg.append("text")
+    .attr("x",width*0.45)
+    .attr("y",height)
+    .style("font-family","Verdana,Arial,Helvetica,sans-serif")
+    .style("font-size","12px")
+    .style("fill","#000000")
+    .text( "PROTEIN SEQUENCE" );
+
+  var g = svg.append("text")
+    .attr("x",10)
+    .attr("y",height*0.47)
+    .attr("transform","rotate(-90 "+10+" "+height*0.47+")")
+    .style("font-family","Verdana,Arial,Helvetica,sans-serif")
+    .style("font-size","12px")
+    .style("fill","#000000")
+    .text( "INFORMATION" );
+
   
   var DOM = globals.dom[ current_ch ]
   var prev_end = 0;
   if(DOM){
     _.sortBy(DOM, function(d) {return parseFloat(d.begin)} ).forEach(function(d){
-      console.log(d);
       var begin = globals.mapping[current_ch].inverse[d.begin];
-      var end = globals.mapping[current_ch].inverse[d.end];
+      var end = globals.mapping[current_ch].inverse[d.end]+1;
       var width = end-begin;
       if(prev_end<begin){
         var g = svg.append("line")
@@ -87,18 +104,32 @@ function cons_viewer(){
         window.open("http://pfam.xfam.org/family/"+d.id); 
       });
       g.append("title").text(d.desc)
-      g.attr("transform", "translate("+b+","+(-1*a)+")");   
+      g.attr("transform", "translate("+b+","+(-1*a)+")");
+      var dx = 0.5*x(width)-2.5*x(d.name.length);
+      if(dx<0){
+        dx = 1;
+      }
       var g = svg.append("text")
-        .attr("x",x(begin+0.5*width))
-        .attr("y",y(-0.4))
-        .text(d.name);
+        .attr("x",x(begin)+dx)
+        .attr("y",y(-0.95))
+        .style("font-family","Verdana,Arial,Helvetica,sans-serif")
+        .style("font-size","12px")
+        .style("font-weight","bold")
+        .style("fill","#880000")
+        .style("cursor","pointer")
+        .text( d.name.toUpperCase() );
+      g.on("click",function(){
+        window.open("http://pfam.xfam.org/family/"+d.id); 
+      });
+      g.append("title").text(d.desc)
+      g.attr("transform", "translate("+b+","+(-1*a)+")");
     });
   }
 
-  if( prev_end < dataArray.length ){
+  if( prev_end < dataArray.length-2 ){
       var g = svg.append("line")
         .attr("x1",x(prev_end+0.2))
-        .attr("x2",x(dataArray.length-0.2))
+        .attr("x2",x(dataArray.length-2))
         .attr("y1",y(-0.5)+10)
         .attr("y2",y(-0.5)+10)
         .style("stroke-width","3px")
@@ -124,7 +155,7 @@ function cons_viewer(){
 
   svg.append("g")
       .attr("class", "axis")
-      .attr("transform", "translate("+25+","+(-1*a)+")")
+      .attr("transform", "translate("+(b-10)+","+(-1*a)+")")
       .call(d3.axisLeft(y).ticks(5));
 
   update_cons();
@@ -132,6 +163,10 @@ function cons_viewer(){
 
 
 function update_cons(){
-  var x = Math.round( $j("#pssm_viewport").scrollTop()/29  );
-  svg.selectAll("#svg_window").attr( "x",x_scale(x) );
+  var max_wx = $j("#pssm_viewport")[0].scrollTopMax;
+  var Y = x_scale(seq_len-box_width);
+  var wx = $j("#pssm_viewport").scrollTop();
+
+  var x = wx*Y/max_wx;
+  svg.selectAll("#svg_window").attr( "x",x );
 }

@@ -2,11 +2,11 @@ class MainController < ApplicationController
 
   require 'net/http'
 
-  PDB_PSSM_PATH = "/home/joan/databases/pdb_pssm/"
+  PDB_PSSM_PATH = "/services/pdb_pssm/databases/pdb_pssm/"
   PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
   EBI_RES_LISTING_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/"
-  PDB_PSSM_PATH_CAMPINS = "/home/jsegura/databases/pdb_pssm/"
+  PDB_PSSM_PATH_CAMPINS = "/services/pdb_pssm/databases/pdb_pssm/"
 
   def main_frame
     @pdb = params[:pdb].downcase
@@ -22,7 +22,7 @@ class MainController < ApplicationController
         pdb_description[ r[1] ]['seq'] = s[0]
       end
       pdb_description[ r[1] ]['status'] = [0,0]
-      db.execute( "select stepNum,status from pdbChainIterStatus where pdb=\"#{@pdb.downcase}\" and chain=\"#{r[1]}\";" ) do |s|
+      db.execute( "select stepNum,status_uniref100 from pdbChainIterStatus where pdb=\"#{@pdb.downcase}\" and chain=\"#{r[1]}\";" ) do |s|
         pdb_description[ r[1] ]['status'][ s[0]-2 ] = s[1]
       end
       pdb_description[ r[1] ][ 'scores' ] = [nil,nil]
@@ -39,7 +39,7 @@ class MainController < ApplicationController
   end
   
   def get_pssm(pdb,chain,n)
-    cmd = "unzip -p "+PDB_PSSM_PATH+"/compressed/"+pdb+"_"+chain+"_"+n+".pssm.zip"
+    cmd = "unzip -p "+PDB_PSSM_PATH+"/pssm/"+pdb+"_"+chain+"_"+n+".pssm.zip"
     file = `#{cmd}` 
     out = [] 
     index = 1
