@@ -1,8 +1,8 @@
 class WebController < ApplicationController
-  PDB_PSSM_PATH = "/services/pdb_pssm/databases/pdb_pssm/"
+  PDB_PSSM_PATH = Settings.PDB_PSSM_PATH
   PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db"
-  PDB_PSSM_PATH_CAMPINS = "/services/pdb_pssm/databases/pdb_pssm/"
+  PDB_PSSM_PATH_CAMPINS = Settings.PDB_PSSM_PATH_CAMPINS
 
   require 'zip'
   require 'rubygems/package'

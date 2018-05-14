@@ -21,3 +21,23 @@
 /yarn-error.log
 
 .byebug_history
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml
+
+/bin  
+/config  
+config.ru  
+/db  
+Gemfile  
+Gemfile.lock  
+/lib  
+/log  
+/node_modules  
+package.json  
+/public  
+Rakefile  
+/test  
+/tmp  
+/vendor

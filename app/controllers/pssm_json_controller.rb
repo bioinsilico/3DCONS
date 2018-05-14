@@ -2,11 +2,11 @@ class PssmJsonController < ApplicationController
 
   require 'net/http'
 
-  PDB_PSSM_PATH = "/services/pdb_pssm/databases/pdb_pssm/"
+  PDB_PSSM_PATH = Settings.PDB_PSSM_PATH
   PDB_PSSM_ZIP = PDB_PSSM_PATH+"pdbOut.zip"
   PDB_PSSM_DB = PDB_PSSM_PATH+"pdb_pssm.db" 
   EBI_RES_LISTING_URL = "https://www.ebi.ac.uk/pdbe/api/pdb/entry/residue_listing/"
-  PDB_PSSM_PATH_CAMPINS = "/services/pdb_pssm/databases/pdb_pssm/"
+  PDB_PSSM_PATH_CAMPINS = Settings.PDB_PSSM_PATH_CAMPINS
 
   def pssm_ch_rest
     pdb = params[:pdb].downcase
